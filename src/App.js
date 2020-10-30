@@ -5,49 +5,49 @@ import Person from "./Person/person";
 class App extends React.Component {
   state = {
     persons: [
-      { name: "Mit", age: "28" },
-      { name: "Foram", age: "40" },
-      { name: "ChanduBhai", age: "100" },
+      { id: "1", name: "", age: "" },
+      { id: "2", name: "", age: "" },
+      { id: "3", name: "", age: "" },
     ],
     otherValues: "MIt",
-    userName: "LamarUniversity",
     showToggle: false,
-  };
-  switchName = (newName) => {
-    this.setState({
-      persons: [
-        { name: "newName", age: "58" },
-        { name: "ShaileshBhai", age: "59" },
-        { name: "Jatusheth", age: "11" },
-      ],
-    });
   };
 
   switchOthervalues = () => {
     this.setState({
-      otherValues: "MIt Is working in React Developer",
+      otherValues: "Mit Is working in React Developer",
     });
   };
 
-  namechangehadler = (event) => {
+  namechangehadler = (event, id1) => {
+    //we have to get element here individually hold the index
+    const personIndex = this.state.persons.findIndex((p) => {
+      return p.id === id1;
+    });
+    //get the person its self and we crate shallow copy of Person
+    const person = { ...this.state.persons[personIndex] };
+    //Update the Person Name
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+
     this.setState({
-      persons: [
-        { name: "Max", age: "58" },
-        { name: "Jay Patel", age: "59" },
-        { name: "Jatan Patel", age: "11" },
-      ],
+      persons: persons,
     });
   };
 
   deletePersonHandler = (index) => {
-    console.log("delete");
-    const persons = this.state.persons;
+    //This way also work but the Standard Practice is That we have to have to update the state immutably
+    //const persons = this.state.persons;
+    const persons = [...this.state.persons];
     persons.splice(index, 1);
     this.setState({
       persons: persons,
     });
   };
   toggler = () => {
+    console.log("toggler");
     const doeshow = this.state.showToggle;
     this.setState({
       showToggle: !doeshow,
@@ -65,8 +65,11 @@ class App extends React.Component {
               <Person
                 name={p.name}
                 age={p.age}
-                clickDelete={() => this.deletePersonHandler(index)}
+                clickDelete={this.deletePersonHandler.bind(this, index)}
+                key={p.id}
+                changed={(event) => this.namechangehadler(event, p.id)}
               />
+              //https://reactjs.org/docs/handling-events.html#passing-arguments-to-event-handlers:Refer this for event handlers in javascript
             );
           })}
         </div>
