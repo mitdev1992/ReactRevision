@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import Person from "./Person/person";
+import Radium ,{StyleRoot} from 'radium';
 
 class App extends React.Component {
   state = {
@@ -8,9 +9,11 @@ class App extends React.Component {
       { id: "1", name: "", age: "" },
       { id: "2", name: "", age: "" },
       { id: "3", name: "", age: "" },
+      { id: "4", name: "", age: "" },
+      { id: "5", name: "", age: "" },
+      { id: "6", name: "", age: "" },
     ],
-    otherValues: "MIt",
-    showToggle: false,
+    buttonText: "Handle Togle",
   };
 
   switchOthervalues = () => {
@@ -20,13 +23,10 @@ class App extends React.Component {
   };
 
   namechangehadler = (event, id1) => {
-    //we have to get element here individually hold the index
     const personIndex = this.state.persons.findIndex((p) => {
       return p.id === id1;
     });
-    //get the person its self and we crate shallow copy of Person
     const person = { ...this.state.persons[personIndex] };
-    //Update the Person Name
     person.name = event.target.value;
 
     const persons = [...this.state.persons];
@@ -38,8 +38,6 @@ class App extends React.Component {
   };
 
   deletePersonHandler = (index) => {
-    //This way also work but the Standard Practice is That we have to have to update the state immutably
-    //const persons = this.state.persons;
     const persons = [...this.state.persons];
     persons.splice(index, 1);
     this.setState({
@@ -47,14 +45,24 @@ class App extends React.Component {
     });
   };
   toggler = () => {
-    console.log("toggler");
     const doeshow = this.state.showToggle;
     this.setState({
       showToggle: !doeshow,
+      buttonText: "Please Go Back To tHe Previous Page",
     });
   };
   render() {
-    //Here You are manging Toggle Dynamically
+    const style = {
+      backgroundColor: "blue",
+      font: "inherit",
+      border: "1px solid blue",
+      padding: "8px",
+      cursor: "pointer",
+      ':hover':{
+        backgroundColor:'lightgreen',
+        color:'black'
+      }
+    };
 
     let persons = null;
     if (this.state.showToggle) {
@@ -69,11 +77,15 @@ class App extends React.Component {
                 key={p.id}
                 changed={(event) => this.namechangehadler(event, p.id)}
               />
-              //https://reactjs.org/docs/handling-events.html#passing-arguments-to-event-handlers:Refer this for event handlers in javascript
             );
           })}
         </div>
       );
+      style.backgroundColor = "Red";
+      style[":hover"]={
+        backgroundColor:'lightred',
+        color:'black'
+      }
     }
     if (this.state.showToggle === false) {
       persons = (
@@ -82,12 +94,25 @@ class App extends React.Component {
         </div>
       );
     }
-    return (
+   // eslint-disable-next-line
+   let className=[]
+   if(this.state.persons.length <=4){
+    className.push('red');
+   }
+   if(this.state.persons.length<=2){
+     className.push('bold');
+   }
+   return (
+     <StyleRoot>
       <div className="App">
-        <button onClick={this.toggler}>Hanlde Togle</button>
+        <p  className={className}>Dynamic Rendering</p>
+        <button style={style} onClick={this.toggler}>
+          {this.state.buttonText}
+        </button>
         {persons}
       </div>
+      </StyleRoot>
     );
   }
 }
-export default App;
+export default Radium(App);

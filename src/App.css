@@ -1,4 +1,17 @@
-.App{
-    align-items: center;
-    color: blue;
+.App {
+  align-items: center;
+}
+.red {
+  color: red;
+  font-family: bold;
+  font-size: xx-large;
+}
+.bold {
+  font-weight: bold;
+  color: violet;
+}
+.green {
+  color: green;
+  font-family: bold;
+  font-size: xx-large;
 }
