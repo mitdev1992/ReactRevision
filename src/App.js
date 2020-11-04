@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
 import Person from "./Person/person";
-import Radium ,{StyleRoot} from 'radium';
 
 class App extends React.Component {
   state = {
@@ -15,6 +14,8 @@ class App extends React.Component {
     ],
     buttonText: "Handle Togle",
   };
+
+
 
   switchOthervalues = () => {
     this.setState({
@@ -52,18 +53,6 @@ class App extends React.Component {
     });
   };
   render() {
-    const style = {
-      backgroundColor: "blue",
-      font: "inherit",
-      border: "1px solid blue",
-      padding: "8px",
-      cursor: "pointer",
-      ':hover':{
-        backgroundColor:'lightgreen',
-        color:'black'
-      }
-    };
-
     let persons = null;
     if (this.state.showToggle) {
       persons = (
@@ -81,11 +70,7 @@ class App extends React.Component {
           })}
         </div>
       );
-      style.backgroundColor = "Red";
-      style[":hover"]={
-        backgroundColor:'lightred',
-        color:'black'
-      }
+
     }
     if (this.state.showToggle === false) {
       persons = (
@@ -103,16 +88,14 @@ class App extends React.Component {
      className.push('bold');
    }
    return (
-     <StyleRoot>
-      <div className="App">
+     <div className="App">
         <p  className={className}>Dynamic Rendering</p>
-        <button style={style} onClick={this.toggler}>
+        <button onClick={this.toggler}>
           {this.state.buttonText}
         </button>
         {persons}
       </div>
-      </StyleRoot>
     );
   }
 }
-export default Radium(App);
+export default App;
